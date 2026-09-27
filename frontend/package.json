@@ -1,0 +1,31 @@
+{
+  "name": "kabadwala-connect",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "typecheck": "tsc -b --pretty false"
+  },
+  "dependencies": {
+    "@zxing/browser": "^0.1.5",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.468.0",
+    "qrcode.react": "^4.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-leaflet": "^4.2.1",
+    "react-router-dom": "^6.30.0",
+    "recharts": "^2.15.1"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.16",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.4.1",
+    "typescript": "^5.7.3",
+    "vite": "^6.3.5"
+  }
+}

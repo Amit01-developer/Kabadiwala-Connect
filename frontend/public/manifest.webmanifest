@@ -1,0 +1,10 @@
+{
+  "name": "Kabadiwala Connect",
+  "short_name": "Kabadiwala",
+  "description": "E-waste collection and verified recycling",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f7f3",
+  "theme_color": "#174b3b",
+  "icons": []
+}

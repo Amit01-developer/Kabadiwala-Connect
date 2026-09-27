@@ -1,0 +1,60 @@
+services:
+  database:
+    image: postgis/postgis:16-3.4-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-kabadiwala}
+      POSTGRES_USER: ${POSTGRES_USER:-kabadiwala}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 4s
+      retries: 20
+
+  cache:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    env_file: .env
+    environment:
+      APP_ENV: production
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-kabadiwala}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB:-kabadiwala}
+      UPLOAD_DIR: /app/.data/uploads
+      REDIS_URL: redis://cache:6379/0
+      POSTGIS_ENABLED: "true"
+      SEED_DEMO: "false"
+      CORS_ORIGINS: http://localhost:8080
+    volumes:
+      - app-uploads:/app/.data/uploads
+    depends_on:
+      database:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+
+  web:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - api
+
+volumes:
+  postgres-data:
+  redis-data:
+  app-uploads:

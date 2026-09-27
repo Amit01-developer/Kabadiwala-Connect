@@ -1,0 +1,6 @@
+-r requirements.txt
+numpy>=1.26
+opencv-python-headless>=4.10
+tensorflow-cpu>=2.16
+xgboost>=2.0
+joblib>=1.4
